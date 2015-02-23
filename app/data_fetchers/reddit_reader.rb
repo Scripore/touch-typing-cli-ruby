@@ -24,8 +24,8 @@ class RedditReader
         post = post.chars
         post.shift
         post = post.join('')
-
       end
+
       post.gsub!("’", "'")
       @posts << post
       end
@@ -35,6 +35,5 @@ class RedditReader
   def generate_html(txt_file)
     File.open(txt_file, 'w') { |file| file.write(@posts) }
   end
-
 
 end

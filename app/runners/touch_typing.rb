@@ -9,10 +9,10 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
 1) All time
 2) This year
 3) This month
-4) Last 24 hours
+4) This week
+5) Last 24 hours
   TEXT
 
-  # make it getch instead of gets.chomp
   # make it default to the all time if no input is given in 3 seconds.
 
   selection_input = STDIN.getch
@@ -22,7 +22,8 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
   interval = "all" if selection_input == "1"
   interval = "year" if selection_input == "2"
   interval = "month" if selection_input == "3"
-  interval = "day" if selection_input == "4"
+  interval = "week" if selection_input == "4"
+  interval = "day" if selection_input == "5"
 
 
   reddit = RedditReader.new("http://www.reddit.com/r/writingprompts/top/.json?sort=top&t=#{interval}") #interpolating subreddit in url string.
@@ -35,17 +36,9 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
     number = []
     full_text_array = []
 
-
   array = reddit_posts # reassigns array to reddit posts.
-
-
   number << (array[rand(0..(reddit_posts.size))])
-
-
-
   string =  number.join(' ')
-
-
   sentence_to_match = string.chars
   user_sentence = string.chars
   user_sentence = user_sentence.map! {|x| x = '#'}
@@ -77,16 +70,14 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
       
     puts string
     puts "\n"
-    puts user_sentence.join #.colorize(:color => :light_blue, :background => :white)
+    puts user_sentence.join 
     puts "\n-----------------------------------"
     puts "Type in '#{sentence_to_match[index].colorize(:red)}'" unless sentence_to_match[index] == nil
     speed = (((sentence_to_match[0..index].size/5.1)/(Time.now.to_i - start_time)) * 60.0).round(1)
     puts "Current speed: #{speed.to_s.colorize(:red)}"
 
+    abort if input == "\e" 
 
-    break if sentence_to_match == user_sentence || input == ';'
-    abort if input == "\e" || input == '|'
-    # you can exit out of the program by typing the ESC key or by the | key. 
   end
 
   seconds_it_took = Time.now.to_i - start_time
@@ -108,6 +99,5 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
   100.times {puts "\n"}
 
   end
-
 
 end
