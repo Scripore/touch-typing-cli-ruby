@@ -6,11 +6,13 @@ class TouchTyping
   100.times {puts "\n"}
 
 puts <<-TEXT
+The headlines are parsed from r/WritingPrompts. Please select a time period to parse the top threads from. 
 Enter in a #{"number".colorize(:blue)} to select the time period:   
+
 1) All time
-2) Year
-3) Month
-4) Day
+2) This year
+3) This month
+4) Last 24 hours
 TEXT
 
   # make it getch instead of gets.chomp
