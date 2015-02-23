@@ -16,7 +16,9 @@ class RedditReader
     @reddit_hash = JSON.parse(RestClient.get(url))
 
     @reddit_hash['data']['children'].each do |post|
-      post = post['data']['title']
+      post_url = post['data']['url'] # this one has to be first.
+      post = post['data']['title'] # reassigns to var post.
+
 
       post = post.slice(4..-1)
       post.delete!(':')
@@ -27,7 +29,7 @@ class RedditReader
       end
 
       post.gsub!("’", "'")
-      @posts << post
+      @posts << [post, post_url]
       end
     @posts
   end

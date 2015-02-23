@@ -4,7 +4,7 @@ class TouchTyping
 
   puts <<-TEXT
 The headlines will be parsed from r/WritingPrompts. Please select a time period to parse the top 25 threads from. 
-Enter in a #{"number".colorize(:blue)} to select the time period:   
+Enter in a #{"number".colorize(:blue)} to make your selection:   
 
 1) All time
 2) This year
@@ -37,8 +37,11 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
     full_text_array = []
 
   array = reddit_posts # reassigns array to reddit posts.
-  number << (array[rand(0..(reddit_posts.size))])
-  string =  number.join(' ')
+
+  number << (array[rand(0..(reddit_posts.size - 1))])
+  number = number.flatten
+
+  string =  number[0]
   sentence_to_match = string.chars
   user_sentence = string.chars
   user_sentence = user_sentence.map! {|x| x = '#'}
@@ -50,7 +53,7 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
   puts "Press ESC twice to exit program.\n\n"
 
   puts "#{">>>".colorize(:red)} Type this sentence:\n"
-  puts string
+  puts string.colorize(:red)
   puts "\nType in the first letter: '#{sentence_to_match[0].colorize(:red)}'" unless sentence_to_match[0] == nil
 
   while sentence_to_match != user_sentence
@@ -68,7 +71,7 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
     index += 1
     100.times {puts "\n"}
       
-    puts string
+    puts string.colorize(:red)
     puts "\n"
     puts user_sentence.join 
     puts "\n-----------------------------------"
@@ -82,18 +85,31 @@ Enter in a #{"number".colorize(:blue)} to select the time period:
 
   seconds_it_took = Time.now.to_i - start_time
   100.times {puts "\n"}
+
+  emoji = nil
+
+  
+  if speed <= 40 
+    emoji = "(╥﹏╥) Shameful!"
+  elsif speed.between?(40, 60) 
+    emoji = "Meh..."
+  else
+    emoji = "(σ・・)σ  You da man!"
+  end   
+
+
   puts <<-TEXT
   __________________________________________________________________________________
          
           It took you #{seconds_it_took.to_s.colorize(:red)} seconds.  
           Your WPM (words per minute) is #{speed.to_s.colorize(:red)}
-          #{reddit.url.colorize(:blue)}  #need to fix this. direct it to post url instead. 
+          #{emoji.colorize(:blue)}  
   __________________________________________________________________________________
   TEXT
   2.times {puts "\n"}
-  puts "#{">>>".colorize(:red)} Want to see the reddit thread? (y/n)"
+  puts "#{">>>".colorize(:red)} Want to visit the reddit thread? (y/n)"
   if STDIN.getch == 'y'
-    Launchy.open( "http://www.ruby-lang.org" )
+    Launchy.open(number[1])
   end
 
   100.times {puts "\n"}
