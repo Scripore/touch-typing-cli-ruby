@@ -9,3 +9,12 @@ Dir["app/runners/*.rb"].each {|f| require f}
 
 require "open-uri"
 require "json"
+require 'io/console'
+require 'pry'
+require 'pp'
+require 'launchy'
+require 'colorize'
+
+# require 'pry'
+# require_relative 'reddit_reader.rb'
+require 'pry-nav'
