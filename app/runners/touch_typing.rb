@@ -1,19 +1,16 @@
-
-
-
 class TouchTyping
 
   100.times {puts "\n"}
 
-puts <<-TEXT
-The headlines are parsed from r/WritingPrompts. Please select a time period to parse the top threads from. 
+  puts <<-TEXT
+The headlines will be parsed from r/WritingPrompts. Please select a time period to parse the top 25 threads from. 
 Enter in a #{"number".colorize(:blue)} to select the time period:   
 
 1) All time
 2) This year
 3) This month
 4) Last 24 hours
-TEXT
+  TEXT
 
   # make it getch instead of gets.chomp
   # make it default to the all time if no input is given in 3 seconds.
@@ -32,6 +29,7 @@ TEXT
   reddit.read!
   reddit.generate_html('./testingreddit.txt')
   reddit_posts = reddit.posts
+
 
   loop do 
     number = []
@@ -52,20 +50,7 @@ TEXT
   user_sentence = string.chars
   user_sentence = user_sentence.map! {|x| x = '#'}
 
-
-
-
-
-
-
-
-  #pp full_text_array.join(' ')
-  #p Time.now
-
   puts "Begin when ready."
-
-
-  # start_time = Time.now.to_i
 
   index = 0
 
@@ -91,7 +76,7 @@ TEXT
     100.times {puts "\n"}
       
     puts string
-   puts "\n"
+    puts "\n"
     puts user_sentence.join #.colorize(:color => :light_blue, :background => :white)
     puts "\n-----------------------------------"
     puts "Type in '#{sentence_to_match[index].colorize(:red)}'" unless sentence_to_match[index] == nil

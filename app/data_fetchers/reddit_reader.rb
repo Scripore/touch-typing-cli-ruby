@@ -1,6 +1,6 @@
 require 'json'
 require 'rest_client'
-# require 'pry'
+require 'pry'
 
 class RedditReader
 
@@ -16,19 +16,19 @@ class RedditReader
     @reddit_hash = JSON.parse(RestClient.get(url))
 
     @reddit_hash['data']['children'].each do |post|
-        post = post['data']['title']
+      post = post['data']['title']
 
-        post = post.slice(4..-1)
-        post.delete!(':')
-        if post.chars[0] == ' '
-          post = post.chars
-          post.shift
-          post = post.join('')
+      post = post.slice(4..-1)
+      post.delete!(':')
+      if post.chars[0] == ' '
+        post = post.chars
+        post.shift
+        post = post.join('')
 
-        end
-        post.gsub!("’", "'")
-        @posts << post
-        end
+      end
+      post.gsub!("’", "'")
+      @posts << post
+      end
     @posts
   end
 

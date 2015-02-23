@@ -14,7 +14,4 @@ require 'pry'
 require 'pp'
 require 'launchy'
 require 'colorize'
-
-# require 'pry'
-# require_relative 'reddit_reader.rb'
 require 'pry-nav'
