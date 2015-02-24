@@ -1,36 +1,10 @@
 class TouchTyping
+include TypeModules
 
-  100.times {puts "\n"}
-
-  puts <<-TEXT
-The headlines will be parsed from r/WritingPrompts. Please select a time period to parse the top 25 threads from. 
-Enter in a #{"number".colorize(:blue)} to make your selection:   
-
-1) All time
-2) This year
-3) This month
-4) This week
-5) Last 24 hours
-  TEXT
-
-  # make it default to the all time if no input is given in 3 seconds.
+  TypeModules.welcome_text
 
   selection_input = STDIN.getch
-  puts "\n\n\n"
-
-
-  interval = "all" if selection_input == "1"
-  interval = "year" if selection_input == "2"
-  interval = "month" if selection_input == "3"
-  interval = "week" if selection_input == "4"
-  interval = "day" if selection_input == "5"
-
-
-  reddit = RedditReader.new("http://www.reddit.com/r/writingprompts/top/.json?sort=top&t=#{interval}") #interpolating subreddit in url string.
-  reddit.read!
-  reddit.generate_html('./testingreddit.txt')
-  reddit_posts = reddit.posts
-
+  reddit_posts = TypeModules.get_headlines(selection_input)
 
   loop do 
     number = []
@@ -45,16 +19,9 @@ Enter in a #{"number".colorize(:blue)} to make your selection:
   sentence_to_match = string.chars
   user_sentence = string.chars
   user_sentence = user_sentence.map! {|x| x = '#'}
-
-  puts "Begin when ready."
-
   index = 0
 
-  puts "Press ESC twice to exit program.\n\n"
-
-  puts "#{">>>".colorize(:red)} Type this sentence:\n"
-  puts string.colorize(:red)
-  puts "\nType in the first letter: '#{sentence_to_match[0].colorize(:red)}'" unless sentence_to_match[0] == nil
+  TypeModules.begin_typing(string, sentence_to_match)
 
   while sentence_to_match != user_sentence
 
@@ -69,7 +36,7 @@ Enter in a #{"number".colorize(:blue)} to make your selection:
     end
 
     index += 1
-    100.times {puts "\n"}
+    TypeModules.refresh_screen
       
     puts string.colorize(:red)
     puts "\n"
@@ -84,35 +51,17 @@ Enter in a #{"number".colorize(:blue)} to make your selection:
   end
 
   seconds_it_took = Time.now.to_i - start_time
-  100.times {puts "\n"}
+  TypeModules.refresh_screen
 
-  emoji = nil
+  emoji = TypeModules.get_emoji(speed)
 
+  TypeModules.generate_final_score(seconds_it_took, speed, emoji)
   
-  if speed <= 40 
-    emoji = "(╥﹏╥) Shameful!"
-  elsif speed.between?(40, 60) 
-    emoji = "Meh..."
-  else
-    emoji = "(σ・・)σ  You da man!"
-  end   
-
-
-  puts <<-TEXT
-  __________________________________________________________________________________
-         
-          It took you #{seconds_it_took.to_s.colorize(:red)} seconds.  
-          Your WPM (words per minute) is #{speed.to_s.colorize(:red)}
-          #{emoji.colorize(:blue)}  
-  __________________________________________________________________________________
-  TEXT
   2.times {puts "\n"}
   puts "#{">>>".colorize(:red)} Want to visit the reddit thread? (y/n)"
-  if STDIN.getch == 'y'
-    Launchy.open(number[1])
-  end
 
-  100.times {puts "\n"}
+  Launchy.open(number[1]) if STDIN.getch == 'y'
+  TypeModules.refresh_screen
 
   end
 
