@@ -29,6 +29,10 @@ class RedditReader
       end
 
       post.gsub!("’", "'")
+      post.gsub!("–", "-")
+
+
+
       @posts << [post, post_url]
       end
     @posts
