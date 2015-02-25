@@ -57,31 +57,26 @@ Enter in a #{"number".colorize(:blue)} to make your selection:
     return reddit.posts   
   end
 
+  def self.begin_typing(string, sentence_to_match)
+    puts "Begin when ready."
+    puts "Press ESC twice to exit program.\n\n"
+    puts "#{">>>".colorize(:red)} Type this sentence:\n"
+    puts string.colorize(:red)
+    puts "\nType in the first letter: '#{sentence_to_match[0].colorize(:red)}'" unless sentence_to_match[0] == nil
+  end  
 
-def self.begin_typing(string, sentence_to_match)
-  puts "Begin when ready."
-  puts "Press ESC twice to exit program.\n\n"
-  puts "#{">>>".colorize(:red)} Type this sentence:\n"
-  puts string.colorize(:red)
-  puts "\nType in the first letter: '#{sentence_to_match[0].colorize(:red)}'" unless sentence_to_match[0] == nil
-end  
-
+  def self.print_speed_char(string, user_sentence, sentence_to_match, start_time, index)
+    puts string.colorize(:red)
+    puts "\n"
+    puts user_sentence.join 
+    puts "\n-----------------------------------"
+    puts "Type in '#{sentence_to_match[index].colorize(:red)}'" unless sentence_to_match[index] == nil
+    speed = (((sentence_to_match[0..index].size/5.1)/(Time.now.to_i - start_time)) * 60.0).round(1)
+    puts "Current speed: #{speed.to_s.colorize(:red)}"
+    return speed
+  end
 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
